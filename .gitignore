@@ -1,0 +1,61 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.log
+
+# Virtual environment
+.venv/
+env/
+venv/
+ENV/
+
+# VSCode
+.vscode/
+.code-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Django
+*.sqlite3
+db.sqlite3
+*.pyc
+
+# Static & media
+staticfiles/
+media/
+
+# Temp files
+*.tmp
+*.swp
+*~
+
+# Pytest / coverage / test output
+htmlcov/
+.coverage
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.cache/
+junit-*.xml
+
+# Custom compiled/test files
+*.out
+*.class
+*.exe
+*.o
+*.so
+*.dll
+
+# IDEs
+.idea/
+*.iml
+
+# Node / front-end (if you use CodeMirror modules)
+node_modules/
+dist/
