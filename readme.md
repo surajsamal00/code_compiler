@@ -8,4 +8,6 @@ This is a local custom test system built with Django.
 
 ## Preview
 Here is a preview of the web based code runner (layout is inspired from codeforces >_< )
-![Preview](assets/screenshot.png)
+<p align="center">
+  <img src="assets/screenshot.png" alt="Preview" width="600"/>
+</p>
