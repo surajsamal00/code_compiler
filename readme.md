@@ -9,5 +9,5 @@ This is a local custom test system built with Django.
 ## Preview
 Here is a preview of the web based code runner (layout is inspired from codeforces >_< )
 <p align="center">
-  <img src="assets/preview" alt="Preview" width="600"/>
+  <img src="assets/preview.png" alt="Preview" width="600"/>
 </p>
