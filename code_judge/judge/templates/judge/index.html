@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Custom Test - Local Codeforces</title>
+
+  <!-- CodeMirror 5 CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/eclipse.min.css">
+
+  <!-- Layout Styles -->
+  <style>
+    body { font-family: sans-serif; background: #f7f7f7; margin: 0; }
+    .nav { background: #333; color: white; padding: 10px 20px; font-size: 14px; }
+    .nav span { margin-right: 15px; cursor: pointer; }
+    .container { display: flex; justify-content: center; margin: 30px; }
+    .editor { width: 60%; padding: 20px; }
+    .right-panel { width: 35%; padding: 20px; }
+    textarea, select { width: 100%; padding: 10px; font-family: monospace; margin-top: 5px; }
+    .label { font-weight: bold; margin-top: 20px; display: block; }
+    .btn { padding: 8px 15px; margin-top: 10px; background: #4CAF50; color: white; border: none; cursor: pointer; }
+    .output-box { background: #f0f0f0; padding: 10px; white-space: pre-wrap; border-radius: 5px; height: 200px; overflow-y: auto; margin-top: 5px; }
+    .footer { margin-top: 10px; font-size: 12px; color: gray; }
+    .CodeMirror { height: 500px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="nav">
+    <span>PROBLEMS</span><span>SUBMIT</span><span>STATUS</span><span>STANDINGS</span><span><b>CUSTOM TEST</b></span>
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="container">
+      <!-- Left: Code editor -->
+      <div class="editor">
+        <label class="label">Source:</label>
+        <textarea id="code-editor" name="code" rows="25">{{ code }}</textarea>
+
+        <div style="margin-top: 5px;">
+            <input type="checkbox" id="switch-editor">
+            <label for="switch-editor">Switch off editor</label>
+            &nbsp;&nbsp;
+            <label for="tab-size" style="margin-right: 5px;">Tab size:</label>
+            <select id="tab-size" style="width: 60px; display: inline-block; padding: 4px 6px;">
+                <option value="2">2</option>
+                <option value="4" selected>4</option>
+                <option value="8">8</option>
+            </select>                              
+        </div>
+
+        <button type="submit" class="btn">Run</button>
+      </div>
+
+      <!-- Right: Language, Input, Output -->
+      <div class="right-panel">
+        <label class="label">Language:</label>
+        <select name="language" id="lang-select">
+          <option value="cpp" {% if language == "cpp" %}selected{% endif %}>GNU G++20</option>
+          <option value="py" {% if language == "py" %}selected{% endif %}>Python 3</option>
+        </select>
+        <label class="label">Time Limit (sec):</label>
+        <input type="number" name="time_limit" value="2" step="0.1" min="0.1" max="10" style="width: 80px; font-size: 14px;">
+
+
+        <label class="label">Input:</label>
+        <textarea name="input" rows="10" style="font-size: 14px; font-family: monospace;">{{ input_data }}</textarea>
+        <div class="footer">No more than 256 KB</div>
+
+        <label class="label">Output:</label>
+        <div class="output-box">{{ output }}</div>
+        {% if error %}
+        <div class="output-box" style="color:red;">{{ error }}</div>
+        {% endif %}
+
+        <div class="footer">
+          Used: {{ time }} sec, (memory not tracked)<br>
+          First 255 bytes only
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <!-- CodeMirror JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/clike/clike.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+
+    <!-- CodeMirror Init -->
+    <script>
+        // Determine language mode using Django logic
+        let mode = "";
+        {% if language == "cpp" %}
+            mode = "text/x-c++src";
+        {% else %}
+            mode = "python";
+        {% endif %}
+
+        // Initialize CodeMirror
+        let editor = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
+            lineNumbers: true,
+            tabSize: 4,
+            indentUnit: 4,
+            mode: mode,
+            theme: "eclipse"
+        });
+
+        // Optional: Switch off editor
+        const toggle = document.getElementById("switch-editor");
+        toggle.addEventListener('change', () => {
+            if (toggle.checked) {
+            editor.toTextArea();
+            } else {
+            editor = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
+                lineNumbers: true,
+                tabSize: 4,
+                indentUnit: 4,
+                mode: mode,
+                theme: "eclipse"
+            });
+            }
+        });
+    </script>
+</body>
+</html>
